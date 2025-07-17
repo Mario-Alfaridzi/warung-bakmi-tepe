@@ -99,7 +99,7 @@ function SidebarApp() {
               <SidebarMenuItem>
                 <SidebarMenuButton
                   onClick={logout}
-                  className="flex justify-center bg-base-200 text-base-300 hover:bg-base-300 hover:text-base-200 rounded-none text-sm cursor-pointer"
+                  className="flex justify-center bg-base-200 text-base-300 hover:bg-base-300 hover:text-base-200 rounded-md text-sm cursor-pointer"
                 >
                   Logout
                 </SidebarMenuButton>
