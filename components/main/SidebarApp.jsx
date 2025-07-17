@@ -42,7 +42,7 @@ function SidebarApp() {
       url: "/tambah-menu",
     },
     {
-      title: "Pemasukkan",
+      title: "Laporan Pemasukkan",
       url: "/pemasukkan",
     },
   ];
