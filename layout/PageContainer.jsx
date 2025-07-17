@@ -14,7 +14,7 @@ function PageContainer({ children }) {
       <SidebarApp />
       <div className="w-full flex flex-col">
         <div className="bg-base-200 p-6 flex justify-between items-center">
-          <span>Welcome, Mario {user?.username}</span>
+          <span>Welcome, {user?.username}</span>
           <Avatar className="w-12 h-12">
             <AvatarImage
               src={user?.imageProfile}
