@@ -14,7 +14,7 @@ function PortalPage() {
         href="/user-menu"
         className="w-[256px] p-2 bg-base-200 hover:bg-base-100 transition-all duration-200 ease-linear text-center rounded-md"
       >
-        Kasir Pemesanan
+        Kasir Pemesanan 2 hehe
       </Link>
     </div>
   );
