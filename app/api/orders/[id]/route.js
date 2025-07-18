@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export async function PUT(request, { params }) {
-  const { id } = params;
+  const { id } = await params;
   const body = await request.json();
 
   try {

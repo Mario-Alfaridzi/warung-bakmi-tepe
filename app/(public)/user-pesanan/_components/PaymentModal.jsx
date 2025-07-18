@@ -70,8 +70,9 @@ function PaymentModal({ name, table, takeaway }) {
     }
     return rupiah;
   };
-
+  const [isSubmit, setIsSubmit] = useState(false);
   const handlePlaceOrder = async () => {
+    setIsSubmit(true);
     const cash = parseRupiah(value);
     const payload = {
       customer_name: name,
@@ -100,6 +101,7 @@ function PaymentModal({ name, table, takeaway }) {
     setTimeout(() => {
       clearCart();
       setOpen(false);
+      setIsSubmit(false);
     }, 500);
   };
 
@@ -162,7 +164,7 @@ function PaymentModal({ name, table, takeaway }) {
             onClick={handlePlaceOrder}
             disabled={rawValue < totalPrice}
           >
-            Bayar
+            {isSubmit ? "Membayar.." : "Bayar"}
           </Button>
         </DialogFooter>
       </DialogContent>

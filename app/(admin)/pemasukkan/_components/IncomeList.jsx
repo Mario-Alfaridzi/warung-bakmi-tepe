@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -16,8 +16,11 @@ import { table_number } from "@/lib/constants";
 import { RupiahIRD } from "@/lib/utils";
 import moment from "moment";
 import * as XLSX from "xlsx";
+import { useResetOrderMutation } from "@/lib/redux/api/orderApi";
+import { toast } from "sonner";
 
 function IncomeList({ order }) {
+  const [resetOrder, { isLoading }] = useResetOrderMutation();
   const [search, setSearch] = useState("");
   const [table, setTable] = useState("");
 
@@ -70,6 +73,19 @@ function IncomeList({ order }) {
     XLSX.writeFile(workbook, fileName);
   };
 
+  const handleReset = () => {
+    try {
+      resetOrder();
+      toast.success("Sukses", {
+        description: `Berhasil reset data`,
+      });
+    } catch (error) {
+      toast.error("Gagal", {
+        description: "Gagal reset data",
+      });
+    }
+  };
+
   return (
     <div className="mb-20">
       <div className="bg-base-200 flex flex-col sm:flex-row sm:items-center justify-between p-4 my-6 rounded-lg gap-2">
@@ -94,7 +110,13 @@ function IncomeList({ order }) {
           />
         </div>
       </div>
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-end mb-4 gap-4">
+        <button
+          onClick={handleReset}
+          className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition cursor-pointer"
+        >
+          {isLoading ? "Mereset..." : "Reset"}
+        </button>
         <button
           onClick={handleExportToExcel}
           className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition cursor-pointer"

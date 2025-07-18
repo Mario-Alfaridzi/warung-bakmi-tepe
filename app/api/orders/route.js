@@ -72,26 +72,7 @@ export async function POST(request) {
 
 export async function GET() {
   try {
-    const now = new Date();
-
-    const startOfDay = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate()
-    );
-    const endOfDay = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate() + 1
-    );
-
     const orders = await prisma.order.findMany({
-      where: {
-        order_time: {
-          gte: startOfDay,
-          lt: endOfDay,
-        },
-      },
       include: {
         order_list: {
           include: {
@@ -110,6 +91,23 @@ export async function GET() {
     return new Response(
       JSON.stringify({
         message: "Terjadi kesalahan saat mengambil data order",
+      }),
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE() {
+  try {
+    await prisma.orderItem.deleteMany();
+    await prisma.order.deleteMany();
+
+    return Response.json({ message: "Berhasil menghapus data" }).status(204);
+  } catch (error) {
+    console.error("Error delete data:", error);
+    return new Response(
+      JSON.stringify({
+        message: "Terjadi kesalahan saat menghapus data",
       }),
       { status: 500 }
     );

@@ -107,7 +107,9 @@ function OrderList({ order }) {
                   {item.customer_name}
                 </TableCell>
                 <TableCell className="font-medium">
-                  {item.table_number ?? "-"}
+                  {item.table_number == 0 || item.table_number == null
+                    ? "-"
+                    : item.table_number}
                 </TableCell>
                 <TableCell className="font-medium">
                   {moment(item.order_time).format("DD-MM-YYYY hh:mm")}

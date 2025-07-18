@@ -28,7 +28,7 @@ function DetailOrder({ open, setOpen, order }) {
 
     const updatedOrder = {
       customer_name: order.customer_name,
-      table_number: order.table_number,
+      table_number: order.table_number ?? 0,
       has_payed: order.has_payed,
       takeaway: order.takeaway,
       total_price: order.total_price,
