@@ -132,26 +132,40 @@ function IncomeList({ order }) {
               <TableHead>No</TableHead>
               <TableHead>Tanggal</TableHead>
               <TableHead className="w-[200px]">Nama</TableHead>
+              <TableHead className="w-[200px]">Menu</TableHead>
               <TableHead>Tipe</TableHead>
               <TableHead>Pemasukkan</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredOrder.map((item, index) => (
-              <TableRow key={item.id}>
-                <TableCell>{index + 1}</TableCell>
-                <TableCell>
-                  {moment(item.order_time).format("DD/MM/YYYY")}
-                </TableCell>
-                <TableCell>{item.customer_name}</TableCell>
-                <TableCell>{item.takeaway ? "Take Away" : "Dine In"}</TableCell>
-                <TableCell>{RupiahIRD(item.total_price)}</TableCell>
-              </TableRow>
-            ))}
+            {filteredOrder.map((item, index) => {
+              return (
+                <TableRow key={item.id}>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>
+                    {moment(item.order_time).format("DD/MM/YYYY")}
+                  </TableCell>
+                  <TableCell>{item.customer_name}</TableCell>
+                  <TableCell>
+                    <ul className="list-disc ml-4">
+                      {item.order_list?.map((orderItem) => (
+                        <li key={orderItem.id}>
+                          {orderItem.menu?.name} (x{orderItem.quantity})
+                        </li>
+                      ))}
+                    </ul>
+                  </TableCell>
+                  <TableCell>
+                    {item.takeaway ? "Take Away" : "Dine In"}
+                  </TableCell>
+                  <TableCell>{RupiahIRD(item.total_price)}</TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={4} className="text-right font-semibold">
+              <TableCell colSpan={5} className="text-right font-semibold">
                 Total
               </TableCell>
               <TableCell className="font-bold text-green-600">
