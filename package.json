@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "node --trace-warnings data/seed.js"
+    "seed": "node --trace-warnings data/seed.js",
+    "reset": "prisma migrate reset"
   },
   "dependencies": {
     "@prisma/client": "^6.10.1",

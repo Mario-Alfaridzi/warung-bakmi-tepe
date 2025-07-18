@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { useCreateMenuMutation } from "@/lib/redux/api/menuApi";
 import { uploadToCloudinary } from "@/cloudinary/uploadToCloudinary";
+import { formatRupiah, parseRupiah } from "@/utils/formatRupiah";
+import { cn } from "@/lib/utils";
 
 function TambahMenu() {
   const router = useRouter();
@@ -20,6 +22,7 @@ function TambahMenu() {
   const {
     register,
     handleSubmit,
+    setValue,
     watch,
     formState: { errors },
   } = useForm();
@@ -35,13 +38,21 @@ function TambahMenu() {
     }
   }, [gambarWatch]);
 
+  const displayPrice = watch("displayPrice") || "";
+
+  const handlePriceChange = (e) => {
+    const formatted = formatRupiah(e.target.value);
+    setValue("displayPrice", formatted);
+    setValue("price", parseRupiah(formatted));
+  };
+
   const onSubmit = async (data) => {
     try {
       const image = await uploadToCloudinary(data.image[0]);
 
       const newMenu = {
         name: data.name,
-        price: parseInt(data.price),
+        price: parseInt(data.price), // sudah dipastikan angka
         type: data.type,
         image,
       };
@@ -61,6 +72,7 @@ function TambahMenu() {
       <div className="bg-base-200 flex flex-col sm:flex-row sm:items-center justify-between p-2 my-6 rounded-lg">
         <span className="text-2xl">Tambah Menu</span>
       </div>
+
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="bg-base-200 p-6 rounded-md flex flex-col gap-6"
@@ -73,26 +85,40 @@ function TambahMenu() {
             placeholder="Masukkan nama menu"
             {...register("name", { required: "Nama menu wajib diisi" })}
           />
-          {errors.namaMenu && (
+          {errors.name && (
             <p className="text-sm text-red-500">{errors.name.message}</p>
           )}
         </div>
 
+        {/* Harga */}
         <div>
+          {/* Input Tampilan (Rp ...) */}
           <InputField
-            type="number"
+            type="text"
             label="Harga"
-            id="price"
+            id="displayPrice"
             placeholder="Masukkan harga"
+            {...register("displayPrice")}
+            value={displayPrice}
+            onChange={handlePriceChange}
+          />
+
+          {/* Input tersembunyi untuk nilai angka */}
+          <input
+            type="hidden"
             {...register("price", {
               required: "Harga wajib diisi",
-              min: { value: 1, message: "Harga minimal 1" },
+              min: { value: 1, message: "Harga minimal Rp 1" },
             })}
           />
-          {errors.harga && (
+
+          {/* Error Message */}
+          {errors.price && (
             <p className="text-sm text-red-500">{errors.price.message}</p>
           )}
         </div>
+
+        {/* Tipe Menu */}
         <div>
           <label className="text-sm font-medium block mb-2">Tipe Menu</label>
           <div className="flex gap-4">
@@ -120,6 +146,7 @@ function TambahMenu() {
           )}
         </div>
 
+        {/* Gambar */}
         <div className="flex flex-col gap-2">
           <label htmlFor="image" className="text-sm font-medium">
             Gambar
@@ -135,7 +162,7 @@ function TambahMenu() {
             })}
             className="p-2 border rounded-md"
           />
-          {errors.gambar && (
+          {errors.image && (
             <p className="text-sm text-red-500">{errors.image.message}</p>
           )}
           {preview && (
@@ -149,6 +176,7 @@ function TambahMenu() {
           )}
         </div>
 
+        {/* Tombol */}
         <div className="flex justify-end gap-4">
           <Link href="/menu">
             <Button
