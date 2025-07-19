@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma";
 
 export async function PUT(request, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
 
     const updatedMenu = await prisma.menu.update({

@@ -9,6 +9,7 @@ export async function GET() {
         available: "desc",
       },
     });
+
     return Response.json(menus);
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
@@ -47,6 +48,7 @@ export async function POST(req) {
 
     return NextResponse.json(newMenu);
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
       { message: error.message || "Terjadi kesalahan" },
       { status: 500 }

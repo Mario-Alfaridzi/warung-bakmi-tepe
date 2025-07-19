@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -17,9 +11,9 @@ model User {
   id           Int      @id @default(autoincrement())
   username     String   @unique
   password     String
-  imageProfile String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  imageProfile String?
 }
 
 model Menu {
@@ -29,9 +23,9 @@ model Menu {
   type      String
   image     String
   available Boolean
-  OrderItem OrderItem[]
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
+  OrderItem OrderItem[]
 }
 
 model Order {
@@ -43,19 +37,19 @@ model Order {
   status        String
   total_price   Int
   order_time    DateTime    @default(now())
-  order_list    OrderItem[]
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
+  order_list    OrderItem[]
 }
 
 model OrderItem {
   id        Int      @id @default(autoincrement())
-  order     Order    @relation(fields: [orderId], references: [id])
   orderId   Int
-  menu      Menu     @relation(fields: [menuId], references: [id])
   menuId    Int
   quantity  Int
-  note      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  note      String?
+  menu      Menu     @relation(fields: [menuId], references: [id])
+  order     Order    @relation(fields: [orderId], references: [id])
 }

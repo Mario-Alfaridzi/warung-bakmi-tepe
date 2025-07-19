@@ -3,28 +3,28 @@ import React from "react";
 import CardOrder from "./CardOrder";
 
 function Dashboard({ order, menus }) {
-  const menuAvailable = menus.filter((menu) => menu.available === true);
+  const menuAvailable = menus?.filter((menu) => menu.available === true);
 
-  const filteredOrder = order.filter((item) => item.has_payed == true);
+  const filteredOrder = order?.filter((item) => item.has_payed == true);
   const totalPendapatan =
     filteredOrder?.reduce((acc, curr) => acc + curr.total_price, 0) || 0;
-  const tableOrder = order.filter(
+  const tableOrder = order?.filter(
     (item) => item.status !== "Selesai" && item.takeaway !== true
   );
   console.log(tableOrder);
   const stats = [
     {
       title: "Menu Tersedia",
-      value: menuAvailable.length,
+      value: menuAvailable?.length ?? 0,
     },
 
     {
       title: "Total Pesanan",
-      value: filteredOrder.length,
+      value: filteredOrder?.length ?? 0,
     },
     {
       title: "Total Pendapatan",
-      value: `Rp ${totalPendapatan.toLocaleString("id-ID")}`,
+      value: `Rp ${totalPendapatan.toLocaleString("id-ID") ?? 0}`,
     },
   ];
 
@@ -43,7 +43,7 @@ function Dashboard({ order, menus }) {
       </div>
 
       <div className="grid grid-cols-3 gap-3 mt-4">
-        {tableOrder.length > 0 ? (
+        {tableOrder?.length > 0 ? (
           tableOrder.map((item, index) => <CardOrder key={index} item={item} />)
         ) : (
           <span className="text-center col-span-3">Tidak ada pesanan</span>
