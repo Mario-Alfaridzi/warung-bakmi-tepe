@@ -1,6 +1,7 @@
+// IncomeList.jsx
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -15,9 +16,11 @@ import SelectField from "@/components/general/SelectField";
 import { table_number } from "@/lib/constants";
 import { RupiahIRD } from "@/lib/utils";
 import moment from "moment";
-import * as XLSX from "xlsx";
 import { useResetOrderMutation } from "@/lib/redux/api/orderApi";
 import { toast } from "sonner";
+import { handleExportToExcel } from "./GenerateReport";
+
+moment.locale("id");
 
 function IncomeList({ order }) {
   const [resetOrder, { isLoading }] = useResetOrderMutation();
@@ -41,47 +44,15 @@ function IncomeList({ order }) {
     0
   );
 
-  const handleExportToExcel = () => {
-    const convertRupiah = (value) =>
-      new Intl.NumberFormat("id-ID", {
-        style: "currency",
-        currency: "IDR",
-        minimumFractionDigits: 0,
-      }).format(value);
-
-    const dataToExport = filteredOrder.map((item) => ({
-      Tanggal: moment(item.order_time).format("DD/MM/YYYY"),
-      Nama: item.customer_name,
-      Tipe: item.takeaway ? "Take Away" : "Dine In",
-      Pemasukkan: convertRupiah(item.total_price),
-    }));
-
-    dataToExport.push({
-      Tanggal: "",
-      Nama: "",
-      Tipe: "Total",
-      Pemasukkan: convertRupiah(totalRevenue),
-    });
-
-    const worksheet = XLSX.utils.json_to_sheet(dataToExport);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Laporan Pemasukan");
-
-    const fileName = `Laporan-Pemasukan-${moment().format(
-      "YYYYMMDD-HHmmss"
-    )}.xlsx`;
-    XLSX.writeFile(workbook, fileName);
-  };
-
-  const handleReset = () => {
+  const handleReset = async () => {
     try {
-      resetOrder();
+      await resetOrder().unwrap();
       toast.success("Sukses", {
         description: `Berhasil reset data`,
       });
     } catch (error) {
       toast.error("Gagal", {
-        description: "Gagal reset data",
+        description: "Gagal reset data. Coba lagi.",
       });
     }
   };
@@ -105,7 +76,7 @@ function IncomeList({ order }) {
             name="table"
             value={table}
             options={table_number}
-            onChange={setTable}
+            onChange={(e) => setTable(e.target.value)}
             placeholder="Pilih Nomor Meja"
           />
         </div>
@@ -113,12 +84,13 @@ function IncomeList({ order }) {
       <div className="flex justify-end mb-4 gap-4">
         <button
           onClick={handleReset}
-          className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition cursor-pointer"
+          disabled={isLoading}
+          className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition cursor-pointer disabled:bg-gray-400"
         >
-          {isLoading ? "Mereset..." : "Reset"}
+          {isLoading ? "Mereset..." : "Reset Data"}
         </button>
         <button
-          onClick={handleExportToExcel}
+          onClick={() => handleExportToExcel(filteredOrder, totalRevenue)}
           className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition cursor-pointer"
         >
           Export Excel
@@ -176,7 +148,7 @@ function IncomeList({ order }) {
         </Table>
       ) : (
         <div className="text-center py-4 text-muted-foreground">
-          Tidak ada data pesanan yang sesuai.
+          Tidak ada data pemasukkan yang ditemukan.
         </div>
       )}
     </div>
