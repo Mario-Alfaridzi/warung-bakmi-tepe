@@ -22,7 +22,7 @@ function CardOrder({ item }) {
       total_price: item.total_price,
       status: completedStatus,
       order_list: item.order_list.map((item) => ({
-        menuId: item.menu?.id || item.menuId || item.id, // pastikan menuId valid
+        menuId: item.menu?.id || item.menuId || item.id,
         quantity: item.quantity,
       })),
     };
