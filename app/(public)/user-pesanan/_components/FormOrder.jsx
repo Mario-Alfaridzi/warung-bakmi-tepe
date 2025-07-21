@@ -57,7 +57,7 @@ function FormOrder() {
         <SwitchField label={"Take away"} checked={true} disabled={true} />
       ) : (
         <SwitchField
-          label={takeaway ? "Dine in" : "Takeaway"}
+          label={takeaway ? "Take away" : "Dine in"}
           checked={takeaway}
           onChange={setTakeaway}
           disabled={false}
