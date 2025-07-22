@@ -11,7 +11,7 @@ function Navbar() {
     <div className="bg-base-200 flex justify-between items-center px-6 py-4">
       <h1 className="text-lg font-semibold">
         <Link href="/portal">
-          <Image src="/assets/images/logo-bakmi.png" alt="Logo" width={120} height={40} />
+          <Image src="/logo-bakmi.png" alt="Logo" width={120} height={40} />
         </Link>
       </h1>
       {pathname === "/user-menu" && <Link href="/user-pesanan">
