@@ -63,12 +63,7 @@ function RegisterPage() {
     <div className="flex flex-col gap-8 h-screen mb-50">
       <div className="bg-base-200 p-6">
         <Link href="/portal">
-          <Image
-            src="/assets/images/logo.png"
-            alt="Logo"
-            width={120}
-            height={40}
-          />
+          <Image src="/logo.png" alt="Logo" width={120} height={40} />
         </Link>
       </div>
       <div className="flex-1 flex flex-col justify-start items-center gap-6">
