@@ -57,7 +57,7 @@ function SidebarApp() {
       <SidebarHeader className="p-6 flex items-center">
         <Link href="/portal">
           <Image
-            src="/assets/images/logo-bakmi.png"
+            src="/logo-bakmi.png"
             alt="Logo"
             width={120}
             height={40}
