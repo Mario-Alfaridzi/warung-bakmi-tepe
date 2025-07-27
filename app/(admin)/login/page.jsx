@@ -95,15 +95,7 @@ function LoginPage() {
               </p>
             )}
           </div>
-          <p className="text-gray-800">
-            Belum punya akun?{" "}
-            <Link
-              href={"/register"}
-              className="text-red-600 border-b border-red-600 hover:text-red-800"
-            >
-              daftar
-            </Link>
-          </p>
+
           <Button
             type="submit"
             disabled={isSubmitting}
