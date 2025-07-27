@@ -1,4 +1,3 @@
-// IncomeList.jsx
 "use client";
 
 import React, { useState } from "react";
@@ -12,31 +11,24 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import InputField from "@/components/general/InputField";
-import SelectField from "@/components/general/SelectField";
-import { table_number } from "@/lib/constants";
 import { RupiahIRD } from "@/lib/utils";
 import moment from "moment";
 import { useResetOrderMutation } from "@/lib/redux/api/orderApi";
 import { toast } from "sonner";
 import { handleExportToExcel } from "./GenerateReport";
+import { Search } from "lucide-react";
 
 moment.locale("id");
 
 function IncomeList({ order }) {
   const [resetOrder, { isLoading }] = useResetOrderMutation();
   const [search, setSearch] = useState("");
-  const [table, setTable] = useState("");
 
   const completedOrder = order.filter((item) => item.has_payed);
 
   const filteredOrder = completedOrder.filter((item) => {
-    const matchesSearch = search
-      ? item.customer_name.toLowerCase().includes(search.toLowerCase())
-      : true;
-    const matchesTable = table
-      ? item.table_number === parseInt(table, 10)
-      : true;
-    return matchesSearch && matchesTable;
+    const formattedDate = moment(item.order_time).format("DD/MM/YYYY");
+    return search ? formattedDate.includes(search) : true;
   });
 
   const totalRevenue = filteredOrder.reduce(
@@ -67,18 +59,11 @@ function IncomeList({ order }) {
             type="text"
             id="search"
             name="search"
-            placeholder="Cari Nama Pemesan"
+            placeholder="Cari Tanggal (27/07/2025)"
             onChange={(e) => setSearch(e.target.value)}
             value={search}
           />
-          <SelectField
-            id="table"
-            name="table"
-            value={table}
-            options={table_number}
-            onChange={(e) => setTable(e.target.value)}
-            placeholder="Pilih Nomor Meja"
-          />
+          <Search size={30} className="mt-2 mr-2" />
         </div>
       </div>
       <div className="flex justify-end mb-4 gap-4">
