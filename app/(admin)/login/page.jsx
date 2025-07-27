@@ -30,30 +30,29 @@ function LoginPage() {
       console.log("USERDATA", userData);
       toast.success(`Selamat datang, ${userData.username}`);
 
-      router.push("/dashboard");
+      if (userData.role === "ADMIN") {
+        router.push("/dashboard");
+      } else if (userData.role === "KASIR") {
+        router.push("/user-menu");
+      } else {
+        toast.error("Role tidak dikenali.");
+      }
     } catch (error) {
       toast.error(error || "Login gagal. Coba lagi.");
     }
   };
 
   useEffect(() => {
-    if (Cookies.get("login")) {
-      router.push("/dashboard");
+    const cookieData = Cookies.get("user_bakmitepe");
+    if (cookieData) {
+      const user = JSON.parse(cookieData);
+      if (user?.role === "ADMIN") {
+        router.push("/dashboard");
+      } else if (user?.role === "KASIR") {
+        router.push("/user-menu");
+      }
     }
-    () => {
-      return;
-    };
   }, []);
-  useEffect(() => {
-    if (isAuth) {
-      router.push("/dashboard");
-
-      Cookies.set("login", JSON.stringify("login"));
-    }
-    () => {
-      return;
-    };
-  }, [isAuth]);
 
   return (
     <div className="flex flex-col  h-screen mb-20">
@@ -63,7 +62,7 @@ function LoginPage() {
         </Link>
       </div>
       <div className="flex-1 flex flex-col justify-start items-center gap-6">
-        <h3 className="text-4xl mt-8">Login Admin Menu</h3>
+        <h3 className="text-4xl mt-8">Login Menu</h3>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="w-[500px] bg-base-200 flex flex-col gap-3 p-6 rounded-md"

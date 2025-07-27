@@ -27,7 +27,7 @@ export async function POST(req) {
     const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "7d" });
 
     const res = NextResponse.json({
-      user: { id: user.id, username: user.username },
+      user: { id: user.id, username: user.username, role: user.role },
     });
 
     res.cookies.set("token_bakmitepe", token, {
@@ -35,6 +35,20 @@ export async function POST(req) {
       maxAge: 60 * 60 * 24 * 7,
       path: "/",
     });
+
+    res.cookies.set(
+      "user_bakmitepe",
+      JSON.stringify({
+        id: user.id,
+        username: user.username,
+        role: user.role,
+        imageProfile: user.imageProfile,
+      }),
+      {
+        maxAge: 60 * 60 * 24 * 7,
+        path: "/",
+      }
+    );
 
     return res;
   } catch (err) {

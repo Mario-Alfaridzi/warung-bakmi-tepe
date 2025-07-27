@@ -13,10 +13,8 @@ import {
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
 import Image from "next/image";
-import { toast } from "sonner";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "@/lib/redux/api/authApi";
 
@@ -54,7 +52,6 @@ function SidebarApp() {
   const logout = async () => {
     dispatch(logoutUser());
     router.push("/login");
-    Cookies.remove("login");
   };
   return (
     <Sidebar>
