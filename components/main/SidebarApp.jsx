@@ -30,6 +30,10 @@ function SidebarApp() {
       url: "/dashboard",
     },
     {
+      title: "Tambah Admin",
+      url: "/tambah-admin",
+    },
+    {
       title: "Pesanan",
       url: "/pesanan",
     },
@@ -56,12 +60,7 @@ function SidebarApp() {
     <Sidebar>
       <SidebarHeader className="p-6 flex items-center">
         <Link href="/portal">
-          <Image
-            src="/logo-bakmi.png"
-            alt="Logo"
-            width={120}
-            height={40}
-          />
+          <Image src="/logo-bakmi.png" alt="Logo" width={120} height={40} />
         </Link>
       </SidebarHeader>
       <SidebarContent className="p-6 gap-11">

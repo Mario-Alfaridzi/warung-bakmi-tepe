@@ -3,14 +3,14 @@
 import React, { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import InputField from "@/components/general/InputField";
-import { Button } from "@/components/ui/button";
+import InputField from "../../../components/general/InputField";
+import { Button } from "../../../components/ui/button";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "@/lib/redux/api/authApi";
+import { loginUser } from "../../../lib/redux/api/authApi";
 
 function LoginPage() {
   const dispatch = useDispatch();

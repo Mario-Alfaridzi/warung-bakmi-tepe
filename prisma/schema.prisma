@@ -7,13 +7,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  ADMIN
+  KASIR
+}
+
 model User {
   id           Int      @id @default(autoincrement())
   username     String   @unique
   password     String
+  imageProfile String?
+  role         Role     @default(KASIR)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  imageProfile String?
 }
 
 model Menu {

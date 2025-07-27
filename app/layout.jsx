@@ -1,8 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster } from "../components/ui/sonner";
 import { ReduxProvider } from "./provider";
-import LoadUserEffect from "@/components/LoadUserEffect";
+import LoadUserEffect from "../components/LoadUserEffect";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
