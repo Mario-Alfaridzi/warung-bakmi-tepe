@@ -1,12 +1,12 @@
-import prisma from "@/lib/prisma";
+import prisma from '@/lib/prisma';
 
 export async function PUT(request, { params }) {
   try {
-    const { id } = await params;
+    const { menuId } = await params;
     const body = await request.json();
 
     const updatedMenu = await prisma.menu.update({
-      where: { id: parseInt(id) },
+      where: { menuId: parseInt(menuId) },
       data: body,
     });
 
@@ -18,10 +18,10 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
   try {
-    const { id } = params;
+    const { menuId } = params;
 
     const deleted = await prisma.menu.delete({
-      where: { id: parseInt(id) },
+      where: { menuId: parseInt(menuId) },
     });
 
     return Response.json(deleted);

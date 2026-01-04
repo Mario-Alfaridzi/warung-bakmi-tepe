@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Table,
   TableBody,
@@ -8,37 +8,33 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import InputField from "@/components/general/InputField";
-import SelectField from "@/components/general/SelectField";
-import DetailOrder from "./DetailOrder";
-import { Trash2, Eye } from "lucide-react";
-import { table_number } from "@/lib/constants";
-import moment from "moment";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import { useDeleteOrderMutation } from "@/lib/redux/api/orderApi";
+} from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import InputField from '@/components/general/InputField';
+import SelectField from '@/components/general/SelectField';
+import DetailOrder from './DetailOrder';
+import { Trash2, Eye } from 'lucide-react';
+import { tableNumber } from '@/lib/constants';
+import moment from 'moment';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import { useDeleteOrderMutation } from '@/lib/redux/api/orderApi';
 
 function OrderList({ order }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [search, setSearch] = useState("");
-  const [table, setTable] = useState("");
+  const [search, setSearch] = useState('');
+  const [table, setTable] = useState('');
   const [selectOrder, setSelectOrder] = useState({});
 
   const filteredOrder =
     (search || table) && order.length > 0
       ? order
           .filter((item) =>
-            search
-              ? item.customer_name.toLowerCase().includes(search.toLowerCase())
-              : item
+            search ? item.customer_name.toLowerCase().includes(search.toLowerCase()) : item
           )
-          .filter((item) =>
-            table ? item.table_number === parseInt(table) : item
-          )
+          .filter((item) => (table ? item.tableNumber === parseInt(table) : item))
       : order;
   const handleOpenDetail = (item) => {
     setSelectOrder(item);
@@ -46,15 +42,15 @@ function OrderList({ order }) {
   };
   const [deleteOrder, { error }] = useDeleteOrderMutation();
 
-  const handleDeleteOrder = async (id) => {
-    await deleteOrder(id);
-    toast.success("Sukses", {
-      description: "Berhasil menghapus pesanan",
+  const handleDeleteOrder = async (orderId) => {
+    await deleteOrder(orderId);
+    toast.success('Sukses', {
+      description: 'Berhasil menghapus pesanan',
     });
     router.refresh();
 
     if (error) {
-      toast.error("Error", {
+      toast.error('Error', {
         description: error?.message,
       });
     }
@@ -79,7 +75,7 @@ function OrderList({ order }) {
             id="meja"
             name="meja"
             value={table}
-            options={table_number}
+            options={tableNumber}
             onChange={setTable}
             placeholder="Pilih nomor meja"
           />
@@ -101,47 +97,40 @@ function OrderList({ order }) {
           </TableHeader>
           <TableBody>
             {filteredOrder.map((item, index) => (
-              <TableRow key={item.id}>
+              <TableRow key={item.orderId}>
                 <TableCell className="font-medium">{index + 1}</TableCell>
+                <TableCell className="font-medium">{item.customerName}</TableCell>
                 <TableCell className="font-medium">
-                  {item.customer_name}
+                  {item.tableNumber == 0 || item.tableNumber == null ? '-' : item.tableNumber}
                 </TableCell>
                 <TableCell className="font-medium">
-                  {item.table_number == 0 || item.table_number == null
-                    ? "-"
-                    : item.table_number}
+                  {moment(item.orderTime).format('DD-MM-YYYY hh:mm')}
                 </TableCell>
                 <TableCell className="font-medium">
-                  {moment(item.order_time).format("DD-MM-YYYY hh:mm")}
+                  Rp. {parseFloat(item.totalPrice).toLocaleString('ID-id')}
                 </TableCell>
                 <TableCell className="font-medium">
-                  Rp. {parseFloat(item.total_price).toLocaleString("ID-id")}
-                </TableCell>
-                <TableCell className="font-medium">
-                  {item.takeaway ? "Take Away" : "Dine In"}
+                  {item.takeaway ? 'Take Away' : 'Dine In'}
                 </TableCell>
                 <TableCell className="font-medium">
                   <Badge
                     variant={
-                      item.status === "Menunggu"
-                        ? "destructive"
-                        : item.status === "Diproses"
-                        ? "info"
-                        : "success"
+                      item.status === 'Menunggu'
+                        ? 'destructive'
+                        : item.status === 'Diproses'
+                        ? 'info'
+                        : 'success'
                     }
                   >
                     {item.status}
                   </Badge>
                 </TableCell>
                 <TableCell className="flex gap-2 font-medium">
-                  <Button
-                    onClick={() => handleOpenDetail(item)}
-                    className="cursor-pointer"
-                  >
+                  <Button onClick={() => handleOpenDetail(item)} className="cursor-pointer">
                     <Eye />
                   </Button>
                   <Button
-                    onClick={() => handleDeleteOrder(item.id)}
+                    onClick={() => handleDeleteOrder(item.orderId)}
                     variant="destructive"
                     className="cursor-pointer"
                   >

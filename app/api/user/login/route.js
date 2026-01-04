@@ -24,10 +24,10 @@ export async function POST(req) {
       return NextResponse.json({ message: "Password salah" }, { status: 400 });
     }
 
-    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "7d" });
+    const token = jwt.sign({ userId: user.userId }, JWT_SECRET, { expiresIn: "7d" });
 
     const res = NextResponse.json({
-      user: { id: user.id, username: user.username, role: user.role },
+      user: { userId: user.userId, username: user.username, role: user.role },
     });
 
     res.cookies.set("token_bakmitepe", token, {
@@ -39,7 +39,7 @@ export async function POST(req) {
     res.cookies.set(
       "user_bakmitepe",
       JSON.stringify({
-        id: user.id,
+        userId: user.userId,
         username: user.username,
         role: user.role,
         imageProfile: user.imageProfile,

@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import React from "react";
-import Cart from "./Cart";
-import FormOrder from "./FormOrder";
-import { useCart } from "@/hooks/use-cart";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { Table, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import React from 'react';
+import Cart from './Cart';
+import FormOrder from './FormOrder';
+import { useCart } from '@/hooks/use-cart';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
+import { Table, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 function MenuCart() {
   const router = useRouter();
@@ -27,7 +27,7 @@ function MenuCart() {
               </TableRow>
             </TableHeader>
             {cart.map((item) => (
-              <Cart key={item.id} product={item} />
+              <Cart key={item.menuId} product={item} />
             ))}
           </Table>
         ) : (
@@ -35,7 +35,7 @@ function MenuCart() {
         )}
       </div>
       <Button
-        onClick={() => router.push("/user-menu")}
+        onClick={() => router.push('/user-menu')}
         className="w-auto sm:w-fit sm:self-center mt-5"
       >
         Tambah Menu Lainnya

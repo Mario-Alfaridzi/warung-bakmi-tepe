@@ -1,41 +1,40 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import Image from "next/image";
-import MenuCard from "@/components/general/MenuCard";
-import InputField from "@/components/general/InputField";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-import { useCart } from "@/hooks/use-cart";
+import React, { useState } from 'react';
+import Image from 'next/image';
+import MenuCard from '@/components/general/MenuCard';
+import InputField from '@/components/general/InputField';
+import { Button } from '@/components/ui/button';
+import { Plus } from 'lucide-react';
+import { useCart } from '@/hooks/use-cart';
 // import { promo } from "@/lib/constants";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 function UserMenu({ menu }) {
   const router = useRouter();
   const { addItem } = useCart();
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const filteredMenu =
     search && menu.length > 0
       ? menu.filter(
-          (item) =>
-            item.name.toLowerCase().includes(search.toLowerCase()) &&
-            item.available
+          (item) => item.name.toLowerCase().includes(search.toLowerCase()) && item.available
         )
       : menu.filter((item) => item.available);
 
   const handleAddMenu = (item) => {
     const itemToAdd = {
+      id: item.menuId,
       ...item,
       quantity: item.quantity ? item.quantity++ : 1,
     };
 
     addItem(itemToAdd);
-    toast("Sukses", {
-      description: "Berhasil menambahkan menu",
+    toast('Sukses', {
+      description: 'Berhasil menambahkan menu',
       action: {
-        label: "Lihat Keranjang",
-        onClick: () => router.push("/user-pesanan"),
+        label: 'Lihat Keranjang',
+        onClick: () => router.push('/user-pesanan'),
       },
     });
   };
@@ -44,19 +43,14 @@ function UserMenu({ menu }) {
     return (
       <div className="flex flex-col gap-4 my-6">
         <h3 className="font-semibold text-base sm:text-lg">
-          {type === "food" ? "Makanan" : "Minuman"}
+          {type === 'food' ? 'Makanan' : 'Minuman'}
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filteredMenu.filter((item) => item.type === type).length > 0 ? (
             filteredMenu
               .filter((item) => item.type === type)
               .map((item) => (
-                <MenuCard
-                  key={item.id}
-                  image={item.image}
-                  title={item.name}
-                  price={item.price}
-                >
+                <MenuCard key={item.menuId} image={item.image} title={item.name} price={item.price}>
                   <Button
                     onClick={() => handleAddMenu(item)}
                     className="w-full flex items-center gap-0.5 cursor-pointer"
@@ -100,8 +94,8 @@ function UserMenu({ menu }) {
           />
         </div>
       </div>
-      {listMenu({ type: "food" })}
-      {listMenu({ type: "drink" })}
+      {listMenu({ type: 'food' })}
+      {listMenu({ type: 'drink' })}
     </div>
   );
 }

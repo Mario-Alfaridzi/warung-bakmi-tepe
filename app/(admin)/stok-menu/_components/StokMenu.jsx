@@ -1,17 +1,15 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import InputField from "@/components/general/InputField";
-import CardStokMenu from "./CardStokMenu";
-import { Search } from "lucide-react";
+import React, { useState } from 'react';
+import InputField from '@/components/general/InputField';
+import CardStokMenu from './CardStokMenu';
+import { Search } from 'lucide-react';
 
 function StokMenu({ menu }) {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const filteredMenu =
     search && menu.length > 0
-      ? menu.filter((item) =>
-          item.name.toLowerCase().includes(search.toLowerCase())
-        )
+      ? menu.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()))
       : menu;
 
   return (
@@ -33,9 +31,7 @@ function StokMenu({ menu }) {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredMenu.length > 0 ? (
-          filteredMenu?.map((item) => (
-            <CardStokMenu key={item.id} menu={item} />
-          ))
+          filteredMenu?.map((item) => <CardStokMenu key={item.menuId} menu={item} />)
         ) : (
           <p>No Result</p>
         )}

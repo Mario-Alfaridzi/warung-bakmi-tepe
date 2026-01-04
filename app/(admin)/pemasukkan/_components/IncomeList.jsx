@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Table,
   TableBody,
@@ -9,42 +9,39 @@ import {
   TableHeader,
   TableFooter,
   TableRow,
-} from "@/components/ui/table";
-import InputField from "@/components/general/InputField";
-import { RupiahIRD } from "@/lib/utils";
-import moment from "moment";
-import { useResetOrderMutation } from "@/lib/redux/api/orderApi";
-import { toast } from "sonner";
-import { handleExportToExcel } from "./GenerateReport";
-import { Search } from "lucide-react";
+} from '@/components/ui/table';
+import InputField from '@/components/general/InputField';
+import { RupiahIRD } from '@/lib/utils';
+import moment from 'moment';
+import { useResetOrderMutation } from '@/lib/redux/api/orderApi';
+import { toast } from 'sonner';
+import { handleExportToExcel } from './GenerateReport';
+import { Search } from 'lucide-react';
 
-moment.locale("id");
+moment.locale('id');
 
 function IncomeList({ order }) {
   const [resetOrder, { isLoading }] = useResetOrderMutation();
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
 
-  const completedOrder = order.filter((item) => item.has_payed);
+  const completedOrder = order.filter((item) => item.hasPayed);
 
   const filteredOrder = completedOrder.filter((item) => {
-    const formattedDate = moment(item.order_time).format("DD/MM/YYYY");
+    const formattedDate = moment(item.orderTime).format('DD/MM/YYYY');
     return search ? formattedDate.includes(search) : true;
   });
 
-  const totalRevenue = filteredOrder.reduce(
-    (acc, curr) => acc + curr.total_price,
-    0
-  );
+  const totalRevenue = filteredOrder.reduce((acc, curr) => acc + curr.totalPrice, 0);
 
   const handleReset = async () => {
     try {
       await resetOrder().unwrap();
-      toast.success("Sukses", {
+      toast.success('Sukses', {
         description: `Berhasil reset data`,
       });
     } catch (error) {
-      toast.error("Gagal", {
-        description: "Gagal reset data. Coba lagi.",
+      toast.error('Gagal', {
+        description: 'Gagal reset data. Coba lagi.',
       });
     }
   };
@@ -72,7 +69,7 @@ function IncomeList({ order }) {
           disabled={isLoading}
           className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition cursor-pointer disabled:bg-gray-400"
         >
-          {isLoading ? "Mereset..." : "Reset Data"}
+          {isLoading ? 'Mereset...' : 'Reset Data'}
         </button>
         <button
           onClick={() => handleExportToExcel(filteredOrder, totalRevenue)}
@@ -97,25 +94,21 @@ function IncomeList({ order }) {
           <TableBody>
             {filteredOrder.map((item, index) => {
               return (
-                <TableRow key={item.id}>
+                <TableRow key={item.orderId}>
                   <TableCell>{index + 1}</TableCell>
-                  <TableCell>
-                    {moment(item.order_time).format("DD/MM/YYYY")}
-                  </TableCell>
-                  <TableCell>{item.customer_name}</TableCell>
+                  <TableCell>{moment(item.orderTime).format('DD/MM/YYYY')}</TableCell>
+                  <TableCell>{item.customerName}</TableCell>
                   <TableCell>
                     <ul className="list-disc ml-4">
-                      {item.order_list?.map((orderItem) => (
-                        <li key={orderItem.id}>
+                      {item.orderItems?.map((orderItem) => (
+                        <li key={orderItem.idOrderItem}>
                           {orderItem.menu?.name} (x{orderItem.quantity})
                         </li>
                       ))}
                     </ul>
                   </TableCell>
-                  <TableCell>
-                    {item.takeaway ? "Take Away" : "Dine In"}
-                  </TableCell>
-                  <TableCell>{RupiahIRD(item.total_price)}</TableCell>
+                  <TableCell>{item.takeaway ? 'Take Away' : 'Dine In'}</TableCell>
+                  <TableCell>{RupiahIRD(item.totalPrice)}</TableCell>
                 </TableRow>
               );
             })}
@@ -125,9 +118,7 @@ function IncomeList({ order }) {
               <TableCell colSpan={5} className="text-right font-semibold">
                 Total
               </TableCell>
-              <TableCell className="font-bold text-green-600">
-                {RupiahIRD(totalRevenue)}
-              </TableCell>
+              <TableCell className="font-bold text-green-600">{RupiahIRD(totalRevenue)}</TableCell>
             </TableRow>
           </TableFooter>
         </Table>

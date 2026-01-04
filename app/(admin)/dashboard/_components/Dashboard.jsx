@@ -1,30 +1,27 @@
-"use client";
-import React from "react";
-import CardOrder from "./CardOrder";
+'use client';
+import React from 'react';
+import CardOrder from './CardOrder';
 
 function Dashboard({ order, menus }) {
   const menuAvailable = menus?.filter((menu) => menu.available === true);
 
-  const filteredOrder = order?.filter((item) => item.has_payed == true);
-  const totalPendapatan =
-    filteredOrder?.reduce((acc, curr) => acc + curr.total_price, 0) || 0;
-  const tableOrder = order?.filter(
-    (item) => item.status !== "Selesai" && item.takeaway !== true
-  );
-  console.log(tableOrder);
+  const filteredOrder = order?.filter((item) => item.hasPayed == true);
+  const totalPendapatan = filteredOrder?.reduce((acc, curr) => acc + curr.totalPrice, 0) || 0;
+  const tableOrder = order?.filter((item) => item.status !== 'Selesai' && item.takeaway !== true);
+
   const stats = [
     {
-      title: "Menu Tersedia",
+      title: 'Menu Tersedia',
       value: menuAvailable?.length ?? 0,
     },
 
     {
-      title: "Total Pesanan",
+      title: 'Total Pesanan',
       value: filteredOrder?.length ?? 0,
     },
     {
-      title: "Total Pendapatan",
-      value: `Rp ${totalPendapatan.toLocaleString("id-ID") ?? 0}`,
+      title: 'Total Pendapatan',
+      value: `Rp ${totalPendapatan.toLocaleString('id-ID') ?? 0}`,
     },
   ];
 
