@@ -8,9 +8,11 @@ const JWT_SECRET = process.env.JWT_SECRET || "secret_key";
 
 export async function POST(req) {
   const { username, password } = await req.json();
-
+  const lowerUsername = username.toLowerCase()
   try {
-    const user = await prisma.user.findUnique({ where: { username } });
+    const user = await prisma.user.findUnique({ where: { 
+      username:lowerUsername 
+    } });
 
     if (!user) {
       return NextResponse.json(

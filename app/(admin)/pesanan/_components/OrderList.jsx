@@ -32,7 +32,7 @@ function OrderList({ order }) {
     (search || table) && order.length > 0
       ? order
           .filter((item) =>
-            search ? item.customer_name.toLowerCase().includes(search.toLowerCase()) : item
+            search ? item.customerName.toLowerCase().includes(search.toLowerCase()) : item
           )
           .filter((item) => (table ? item.tableNumber === parseInt(table) : item))
       : order;

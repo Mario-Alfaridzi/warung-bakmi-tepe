@@ -74,11 +74,11 @@ export const handleExportToExcel = async (filteredOrder, totalRevenue) => {
 
     const rowData = [
       index + 1,
-      moment(item.order_time).format('D MMM YYYY'),
-      item.customer_name,
+      moment(item.orderTime).format('D MMM YYYY'),
+      item.customerName,
       menuItems,
       item.takeaway ? 'Take Away' : 'Dine In',
-      item.total_price,
+      item.totalPrice,
     ];
     const row = worksheet.addRow(rowData);
 
